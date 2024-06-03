@@ -6,6 +6,8 @@
 
 #### TypeScript types generator https://app.quicktype.io/
 
+## [DEMO](https://nuxt3-auth.netlify.app/)
+
 ## Setup
 
 Make sure to install the dependencies:
