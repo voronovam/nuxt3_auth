@@ -61,7 +61,6 @@ definePageMeta({
     &:before{
       content: '';
       position: absolute;
-      z-index: -1;
       height: 1px;
       background-color: var(--gray-text-color);
       width: 100%;
@@ -76,6 +75,7 @@ definePageMeta({
     width: 213px;
     height: 25px;
     background-color: var(--light-color);
+    z-index: 1;
   }
 
   &__description {
