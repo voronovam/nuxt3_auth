@@ -18,13 +18,16 @@ export const useUserStore = defineStore('user', () => {
                 body: JSON.stringify(data),
             })
 
-            setToken(res.token);
-            await fetchCustomer();
-        } catch (error) {
-            setToken();
-            setUser();
+            setToken(res.token)
+            await fetchCustomer()
+            return { success: true, error: null }
 
+        } catch (error: any) {
+            setToken()
+            setUser()
             console.error(error)
+            
+            return { success: false, error: error.data.message || 'An error occurred' }
         }
     }
 

@@ -1,8 +1,8 @@
 <template lang="pug">
 .illustration
   img.illustration__img(
-    :src="`/img/${nameImg}.svg`"
-    :alt="`${nameImg} illustration`"
+    :src="`/img/${props.nameImg}.svg`"
+    :alt="`${props.nameImg} illustration`"
   )
 </template>
 

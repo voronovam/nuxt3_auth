@@ -1,5 +1,7 @@
 <template lang="pug">
-form.auth-form(@submit.prevent="handleAuth")
+form.auth-form(
+  @submit.prevent="handleAuth"
+)
   .auth-form__field.mb-2
     UiIcon.auth-form__icon._left(name="person")
     label(for="username" hidden) Username:
@@ -37,9 +39,14 @@ form.auth-form(@submit.prevent="handleAuth")
       label(for="checkbox") Accept {{' '}}
         nuxt-link(to="") terms and conditions
 
-  ActionButton(type="submit")
+  ActionButton(
+    type="submit"
+    :disable="!isFormValid"
+  )
     template(v-if="mode === 'signup'") sign up
     template(v-else) log in
+
+  p.auth-form__error.mt-2(v-if="loginError") {{ loginError }}
 
 </template>
 
@@ -60,6 +67,7 @@ const passwordConfirm = ref('')
 
 const errors = ref({})
 const isValid = ref(true)
+const loginError = ref('')
 
 const validateFields = () => {
   errors.value = {} // clear fields before validate
@@ -81,6 +89,9 @@ const validateFields = () => {
   return Object.keys(errors.value).length === 0
 }
 
+const isFormValid = computed(() => {
+  return username.value && password.value
+})
 
 const handleAuth = async () => {
   isValid.value = validateFields()
@@ -89,12 +100,22 @@ const handleAuth = async () => {
     return
   }
 
-  await userStore.signIn({
-    username: username.value,
-    password: password.value,
-  })
+  try {
+    const errorMessage = await userStore.signIn({
+      username: username.value,
+      password: password.value,
+    })
 
-  await navigateTo('/', { external: true })
+    await navigateTo('/')
+
+    if (errorMessage) {
+      loginError.value = errorMessage.error
+      return
+    }
+    
+  } catch (error) {
+    console.error(error)
+  }
 }
 </script>
 

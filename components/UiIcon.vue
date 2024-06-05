@@ -1,7 +1,7 @@
 <template lang="pug">
 component.ui-icon(
   :is="icon"
-  :style="`--uiIconSize: ${size}`"
+  :style="`--uiIconSize: ${props.size}`"
 )
 
 </template>

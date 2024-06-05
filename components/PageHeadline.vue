@@ -1,6 +1,6 @@
 <template lang="pug">
 h1.page-headline.font-bold
-  | {{ headline }}
+  | {{ props.headline }}
 
 </template>
 

@@ -19,6 +19,8 @@
     --accent-text-color: #8098f9;
 
     --accent-color-hover: #7088e5;
+
+    --accent-color-disabled: #b2c1fa;
 }
 
 body {

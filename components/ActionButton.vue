@@ -1,9 +1,19 @@
 <template lang="pug">
 button.action-button.font-inter.uppercase(
   @click="$emit('click', $event)"
+  :disabled="props.disable"
 )
   slot
 </template>
+
+<script setup lang="ts">
+type Props = {
+  disable?: boolean
+}
+const props = withDefaults(defineProps<Props>(),{
+  disable: true,
+})
+</script>
 
 <style lang="scss">
 .action-button {
@@ -15,9 +25,13 @@ button.action-button.font-inter.uppercase(
   font-weight: 700;
   transition: background-color .2s ease-in;
 
-  &:hover,
-  &:focus-visible {
+  &:hover:not(:disabled),
+  &:focus-visible:not(:disabled) {
     background-color: var(--accent-color-hover);
+  }
+
+  &:disabled {
+    background-color: var(--accent-color-disabled);
   }
 }
 </style>
