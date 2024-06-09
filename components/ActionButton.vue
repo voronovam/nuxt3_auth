@@ -3,12 +3,16 @@ button.action-button.font-inter.uppercase(
   @click="$emit('click', $event)"
   :disabled="props.disable"
 )
-  slot
+  Loader(v-if="props.loading")
+
+  slot(v-else)
+
 </template>
 
 <script setup lang="ts">
 type Props = {
-  disable?: boolean
+  disable?: boolean,
+  loading?: boolean,
 }
 const props = withDefaults(defineProps<Props>(),{
   disable: true,

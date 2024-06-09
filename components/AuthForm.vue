@@ -42,6 +42,7 @@ form.auth-form(
   ActionButton(
     type="submit"
     :disable="!isFormValid"
+    :loading="isLoading"
   )
     template(v-if="mode === 'signup'") sign up
     template(v-else) log in
@@ -67,26 +68,20 @@ const passwordConfirm = ref('')
 
 const errors = ref({})
 const isValid = ref(true)
+const isLoading = ref(false)
 const loginError = ref('')
 
-const validateFields = () => {
-  errors.value = {} // clear fields before validate
-
-  const fields = {
-    username: username.value,
-    password: password.value,
-    //email: email.value,
-    //passwordConfirm: passwordConfirm.value
-  }
+const validateFields = (fields: Record<string, string>): Record<string, string> => {
+  const errors: Record<string, string> = {}
 
   for (const [field, value] of Object.entries(fields)) {
     const error = validateValue(value)
     if (error) {
-      errors.value[field] = error
+      errors[field] = error
     }
   }
 
-  return Object.keys(errors.value).length === 0
+  return errors
 }
 
 const isFormValid = computed(() => {
@@ -94,11 +89,20 @@ const isFormValid = computed(() => {
 })
 
 const handleAuth = async () => {
-  isValid.value = validateFields()
+  const fields = {
+    username: username.value,
+    password: password.value,
+    //email: email.value,
+    //passwordConfirm: passwordConfirm.value
+  }
+  //errors.value = validateFields(fields)
+  isValid.value = validateFields(fields)
 
   if (!isValid.value) {
     return
   }
+
+  isLoading.value = true
 
   try {
     const errorMessage = await userStore.signIn({
@@ -106,13 +110,15 @@ const handleAuth = async () => {
       password: password.value,
     })
 
+    isLoading.value = false
+
     await navigateTo('/')
 
     if (errorMessage) {
       loginError.value = errorMessage.error
       return
     }
-    
+
   } catch (error) {
     console.error(error)
   }
