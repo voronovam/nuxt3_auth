@@ -58,7 +58,7 @@ definePageMeta({
     position: relative;
     margin-bottom: 25px;
 
-    &:before{
+    &::before {
       content: '';
       position: absolute;
       height: 1px;

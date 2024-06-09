@@ -1,4 +1,4 @@
-import { User, Customer, Login } from 'types';
+import { User, Customer, Login, SignUp } from 'types';
 
 export const useUserStore = defineStore('user', () => {
     const user = ref();
@@ -26,7 +26,28 @@ export const useUserStore = defineStore('user', () => {
             setToken()
             setUser()
             console.error(error)
-            
+
+            return { success: false, error: error.data.message || 'An error occurred' }
+        }
+    }
+
+    const signUp = async (data: SignUp) => {
+        try {
+            const res = await $fetch<User>('http://dummyjson.com/users/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data),
+            })
+
+            setToken(res.token)
+            await fetchCustomer()
+            return { success: true, error: null }
+
+        } catch (error: any) {
+            setToken()
+            setUser()
+            console.error(error)
+
             return { success: false, error: error.data.message || 'An error occurred' }
         }
     }
@@ -48,5 +69,5 @@ export const useUserStore = defineStore('user', () => {
         setUser();
     }
 
-    return { user, token, signIn, fetchCustomer, setToken, setUser, logout }
+    return { user, token, signIn, signUp, fetchCustomer, setToken, setUser, logout }
 })

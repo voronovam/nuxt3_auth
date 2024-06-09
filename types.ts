@@ -14,6 +14,12 @@ export interface Login {
     password: string;
 }
 
+export interface SignUp {
+    username: string;
+    password: string;
+    email: string;
+}
+
 export interface Customer {
     id:         number;
     firstName:  string;

@@ -3,7 +3,6 @@ form.conform-form(
   @submit.prevent=""
 )
 
-  ActionButton submit
 
 </template>
 

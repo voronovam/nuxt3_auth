@@ -11,12 +11,11 @@ button.action-button.font-inter.uppercase(
 
 <script setup lang="ts">
 type Props = {
-  disable?: boolean,
-  loading?: boolean,
+  disable: boolean,
+  loading: boolean,
 }
-const props = withDefaults(defineProps<Props>(),{
-  disable: true,
-})
+
+const props = defineProps<Props>()
 </script>
 
 <style lang="scss">
