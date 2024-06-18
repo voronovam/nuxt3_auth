@@ -10,46 +10,32 @@ export const useUserStore = defineStore('user', () => {
     const setToken = (data?: string) => (token.value = data);
     const setUser = (data?: any) => (user.value = data);
 
-    const signIn = async (data: Login) => {
+    const handleRequest = async (url: string, data: Login | SignUp) => {
         try {
-            const res = await $fetch<User>('https://dummyjson.com/auth/login', {
+            const res = await $fetch<User>(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
-            })
+            });
 
-            setToken(res.token)
-            await fetchCustomer()
-            return { success: true, error: null }
-
+            setToken(res.token);
+            await fetchCustomer();
+            return { success: true, error: null };
         } catch (error: any) {
-            setToken()
-            setUser()
-            console.error(error)
+            setToken();
+            setUser();
+            console.error(error);
 
-            return { success: false, error: error.data.message || 'An error occurred' }
+            return { success: false, error: error.data.message || 'An error occurred' };
         }
     }
 
+    const signIn = async (data: Login) => {
+        return await handleRequest('https://dummyjson.com/auth/login', data);
+    }
+
     const signUp = async (data: SignUp) => {
-        try {
-            const res = await $fetch<User>('http://dummyjson.com/users/add', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data),
-            })
-
-            setToken(res.token)
-            await fetchCustomer()
-            return { success: true, error: null }
-
-        } catch (error: any) {
-            setToken()
-            setUser()
-            console.error(error)
-
-            return { success: false, error: error.data.message || 'An error occurred' }
-        }
+        return await handleRequest('http://dummyjson.com/users/add', data);
     }
 
     const fetchCustomer = async () => {
